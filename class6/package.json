@@ -1,0 +1,19 @@
+{
+  "name": "class6",
+  "version": "1.0.0",
+  "description": "npm practice",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon indes.js"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "Hasan",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
