@@ -2,7 +2,7 @@ const usermodel= require("../models/user.schema")
 const getuser=async (req,res)=>{
         try{
            const users=await usermodel.find().sort({
-            _id:1
+            number:1
            })
            if(users){
             res.status(200).send(users)
@@ -39,10 +39,12 @@ const postuser= async (req,res)=>{
           })
     }
 }
-const deltuser= async (req,res)=>{
+const deltuser = async (req,res)=>{
+        const email = req.params.email
         try{
-            const id = req.params.id
-            const userdelt=await usermodel.findByIdAndDelete({_id:id})
+            const finduser= await usermodel.findOne({email:email})
+          
+            const userdelt= await usermodel.findByIdAndDelete({_id:finduser.id})
             if(userdelt){
                 res.status(200).send(userdelt)
             }
@@ -55,18 +57,21 @@ const deltuser= async (req,res)=>{
 
         }catch(error){
            res.send({
-            message:"there is some error"
+            message:error
            })
         }
 }
 const updtuser=async (req,res)=>{
     try{
-        const id=req.params.id
+        const email=req.params.email
+        const finduser=await usermodel.findOne({email:email})
+        const name=req.body.name
         const number=req.body.number
         const updtuser= await usermodel.findByIdAndUpdate(
-            {_id:id},
+            {_id:finduser.id},
             {
             $set:{
+                name:name,
                 number:number
             }},
             {new:true})
@@ -85,4 +90,22 @@ const updtuser=async (req,res)=>{
     }
 
 }
-module.exports={getuser,postuser,deltuser,updtuser}
+const postlogin=async (req,res)=>{
+    const email=req.body.email
+    const password=req.body.password
+try{
+    const user=await usermodel.findOne({$and:[{email:email},{password:password}]})
+    if(user){
+        res.status(200).send(user)
+    }
+    else{
+        res.json("not exist")
+    }
+}
+catch(error){
+      res.send({
+        message:"there is some error"
+      })
+}
+}
+module.exports={getuser,postuser,deltuser,updtuser,postlogin}

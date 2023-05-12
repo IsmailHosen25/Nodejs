@@ -1,5 +1,7 @@
 const express=require('express')
 const app=express()
+const cors=require("cors")
+app.use(cors())
 const user=require("./routes/user.route")
 const mongoose=require("mongoose")
 app.use(express.json())
